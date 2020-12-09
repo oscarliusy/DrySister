@@ -1,4 +1,4 @@
-package com.spl.drysister.utils;
+package com.spl.drysister.loader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
