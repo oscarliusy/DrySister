@@ -21,6 +21,7 @@ import java.net.URL;
 /**
  * auther: Oscar Liu
  * Date: 2020/12/9  16:01
+ * 请求网络图片url，并向控件加载图片
  */
 public class PictureLoader {
 

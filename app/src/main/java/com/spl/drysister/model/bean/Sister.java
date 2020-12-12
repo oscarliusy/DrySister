@@ -12,22 +12,10 @@ public class Sister {
   private String source;
   private String type;
   private String url;
-  private boolean used;
+  private int used;
   private String who;
 
   public Sister() {
-  }
-
-  public Sister(String _id, String createdAt, String desc, String publishedAt, String source, String type, String url, boolean used, String who) {
-    this._id = _id;
-    this.createdAt = createdAt;
-    this.desc = desc;
-    this.publishedAt = publishedAt;
-    this.source = source;
-    this.type = type;
-    this.url = url;
-    this.used = used;
-    this.who = who;
   }
 
   public String get_id() {
@@ -86,11 +74,11 @@ public class Sister {
     this.url = url;
   }
 
-  public boolean isUsed() {
+  public int getUsed() {
     return used;
   }
 
-  public void setUsed(boolean used) {
+  public void setUsed(int used) {
     this.used = used;
   }
 

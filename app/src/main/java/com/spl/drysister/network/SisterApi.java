@@ -16,6 +16,7 @@ import java.util.ArrayList;
 /**
  * author: Oscar Liu
  * Date: 2020/12/9  18:31
+ * 向网络api请求Json数据，并解析为bean数据
  */
 public class SisterApi {
 
@@ -26,7 +27,8 @@ public class SisterApi {
    * 网络请求数据信息
    */
   public ArrayList<Sister> fetchSister(int count,int page){
-    String fetchUrl = BASE_URL + count + "/" + page;
+    int availablePage = page + 2;
+    String fetchUrl = BASE_URL + count + "/" + availablePage;
     ArrayList<Sister> sisters = new ArrayList<>();
 
     try {
@@ -85,13 +87,17 @@ public class SisterApi {
       sister.setSource(results.getString("source"));
       sister.setType(results.getString("type"));
       sister.setUrl(results.getString("url"));
-      sister.setUsed(results.getBoolean("used"));
+      sister.setUsed(boolean2int(results.getBoolean("used")));
       sister.setWho(results.getString("who"));
 
       sisters.add(sister);
 
     }
     return sisters;
+  }
+
+  private int boolean2int(boolean b){
+    return b ? 1 : 0;
   }
 }
 
