@@ -1,13 +1,18 @@
 package com.spl.drysister.controller.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.spl.drysister.R;
 import com.spl.drysister.db.SisterDBHelper;
@@ -34,6 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
   private SisterLoader mLoader;
   private SisterDBHelper mDbHelper;
 
+  String[] mPermissionList = new String[]{
+      Manifest.permission.WRITE_EXTERNAL_STORAGE,
+      Manifest.permission.READ_EXTERNAL_STORAGE,
+      Manifest.permission.MOUNT_FORMAT_FILESYSTEMS
+  };
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -44,9 +55,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     mLoader = SisterLoader.getInstance(MainActivity.this);
     mDbHelper = SisterDBHelper.getInstance();
 
-    initData();
+    //initData();
 
     initUI();
+
+    //申请权限，SD卡文件读写，创建文件夹和文件
+    initPermission();
+  }
+
+  private void initPermission() {
+    ActivityCompat.requestPermissions(MainActivity.this,mPermissionList,100);
+  }
+
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    switch (requestCode){
+      case 100:
+        boolean writeExternalStorage = grantResults[0] == PackageManager.PERMISSION_GRANTED;//true
+        boolean readExternalStorage = grantResults[1] == PackageManager.PERMISSION_GRANTED;//true
+        //grantResults:[0,0], true true
+        if(grantResults.length > 0 && writeExternalStorage && readExternalStorage){
+          initData();
+        }else{
+          Toast.makeText(this, "请设置权限", Toast.LENGTH_SHORT).show();
+        }
+    }
   }
 
   private void initData() {
@@ -81,6 +116,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         break;
       case R.id.btn_next:
+        //测试崩溃日志和app重启
+        //int a = 1/0;
         previousBtn.setVisibility(View.VISIBLE);
         if(curPos < data.size()){
           ++curPos;
